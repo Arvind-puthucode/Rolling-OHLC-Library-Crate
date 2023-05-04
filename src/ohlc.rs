@@ -1,18 +1,23 @@
-// src/ohlc.rs
-pub struct OHLC {
+use anyhow::Result;
+use serde::{self, Serialize};
+
+#[derive(Debug, Clone, Serialize)]
+pub struct Ohlc {
+    pub symbol: String,
+    pub timestamp: i64,
+    #[serde(serialize_with = "back_to_json")]
     pub open: f64,
+    #[serde(serialize_with = "back_to_json")]
     pub high: f64,
+    #[serde(serialize_with = "back_to_json")]
     pub low: f64,
+    #[serde(serialize_with = "back_to_json")]
     pub close: f64,
-    pub open_time: u64,
-    pub close_time: u64,
 }
 
-impl OHLC {
-    pub fn update_ohlc(&mut self, price: f64, timestamp: u64) {
-        self.high = self.high.max(price);
-        self.low = self.low.min(price);
-        self.close = price;
-        self.close_time = timestamp;
-    }
+fn back_to_json<S>(value: &f64, serializer: S) -> Result<S::Ok, S::Error>
+where
+    S: serde::Serializer,
+{
+    serializer.serialize_str(&value.to_string())
 }
