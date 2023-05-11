@@ -1,32 +1,44 @@
-# Tensorfox Homework Assignment
+# Rolling OHLC Library Crate
+This Rust library crate provides a convenient way of computing rolling OHLC (open-high-low-close) values for a stream of numeric prices and timestamps, based on a given time window.
 
-## Task 1 
+## Features
+* Rolling OHLC Calculation: Calculate the rolling OHLC values for a given time window based on a stream of prices and timestamps.
+* Customizable Time Window: Set the desired time window for calculating the rolling OHLC values.
+* Efficient Computation: The library crate is designed to efficiently process large datasets and provide accurate results in a timely manner.
 
-Develop a Rust library crate that provides a way of computing rolling OHLC (open-high-low-close) for a stream of numeric 
-prices and timestamps for a given time window.
+##Installation
+* To use this crate in your Rust project, add the following line to your Cargo.toml file:
+ * `[dependencies]
+  rolling_ohlc = "0.1.0" `
 
-E.g., if the window is 5 minutes, once a new price/timestamp is given, return the rolling 5-minute OHLC over the last 
-5 minutes - the earliest price in the time period, the highest/lowest prices and the latest price.
+## Usage
 
-## Task 2 
+``` 
+use rolling_ohlc::{RollingOHLC, PriceTick};
 
-Use your crate as a dependency to provide something to run which reads JSON data in the given format from a given 
-filename (see attached file for example) for multiple symbols, and outputs rolling OHLC for the current symbol that just 
-ticked (the window is fixed and provided at startup, same for all symbols).
+fn main() {
+    // Create a new RollingOHLC instance with a 5-minute time window
+    let mut rolling_ohlc = RollingOHLC::new(5 * 60); // 5 minutes in seconds
 
-We will evaluate and grade your solution’s performance and overall quality, including crate structure and following 
-rust best practices and formatting guidelines along with any tests or benchmarks you deem necessary.
+    // Process price ticks and compute rolling OHLC
+    let price_tick1 = PriceTick::new(1620732900, 10.5); // Timestamp: 1620732900, Price: 10.5
+    rolling_ohlc.process_tick(price_tick1);
 
-## Dataset
+    let price_tick2 = PriceTick::new(1620732960, 11.2); // Timestamp: 1620732960, Price: 11.2
+    rolling_ohlc.process_tick(price_tick2);
 
-We provide two files with ticker updates for several symbols. Each line represents a single event with bid/ask price 
-and quantity and a timestamp `T` (which should be used to calculate the window). We ask you to calculate rolling OHLC 
-for a 5 minutes window. For `data/dataset-a.txt` we additionally provide the expected output. You can use it to test
-your solution. We expect you to follow the same output format for `data/dataset-b.txt`. We will test your solution 
-using `data/dataset-b.txt`.
+    // Get the current rolling OHLC values
+    let ohlc = rolling_ohlc.get_current_ohlc();
+    println!("Open: {}", ohlc.open);
+    println!("High: {}", ohlc.high);
+    println!("Low: {}", ohlc.low);
+    println!("Close: {}", ohlc.close);
+} 
+```
+## Example
+  You can find an example implementation using this crate to read JSON data and calculate rolling OHLC for multiple symbols in the example directory.
 
-## PR
+## Contribution
+  Contributions are welcome! If you have any ideas, improvements, or bug fixes, please open an issue or submit a pull request on GitHub.
 
-To submit your project solution, we prefer that you create a branch from the main repository in order to work on your solution. 
-Once you have completed your solution, please create a pull request (PR) for review. This will allow our team to easily review 
-your code changes and if necessary provide feedback. Thank you for your cooperation in following these submission guidelines.
+
