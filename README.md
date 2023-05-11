@@ -36,7 +36,7 @@ fn main() {
 } 
 ```
 ## Example
-  You can find an example implementation using this crate to read JSON data and calculate rolling OHLC for multiple symbols in the example directory.
+  You can find an example implementation using this crate to read JSON data and calculate rolling OHLC for multiple symbols in the main.rs file.
 
 ## Contribution
   Contributions are welcome! If you have any ideas, improvements, or bug fixes, please open an issue or submit a pull request on GitHub.
